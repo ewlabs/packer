@@ -256,6 +256,7 @@ func (b *Builder) Run(ui packer.Ui, hook packer.Hook, cache packer.Cache) (packe
 			HTTPPortMax: b.config.HTTPPortMax,
 		},
 		&vmwcommon.StepConfigureVNC{
+			Skip:               b.config.BootCommand == nil,
 			VNCBindAddress:     b.config.VNCBindAddress,
 			VNCPortMin:         b.config.VNCPortMin,
 			VNCPortMax:         b.config.VNCPortMax,
@@ -270,6 +271,7 @@ func (b *Builder) Run(ui packer.Ui, hook packer.Hook, cache packer.Cache) (packe
 			Headless:           b.config.Headless,
 		},
 		&vmwcommon.StepTypeBootCommand{
+			Skip:        b.config.BootCommand == nil,
 			BootCommand: b.config.BootCommand,
 			VMName:      b.config.VMName,
 			Ctx:         b.config.ctx,
@@ -300,6 +302,7 @@ func (b *Builder) Run(ui packer.Ui, hook packer.Hook, cache packer.Cache) (packe
 		},
 		&vmwcommon.StepCleanVMX{
 			RemoveEthernetInterfaces: b.config.VMXConfig.VMXRemoveEthernet,
+			SkipVNCDisable:           b.config.BootCommand == nil,
 		},
 		&StepUploadVMX{
 			RemoteType: b.config.RemoteType,
